@@ -1,3 +1,5 @@
+@import "../../assets/styles/variables";
+
 .boxTodoList {
   max-width: 740px;
   width: 100%;
@@ -10,9 +12,35 @@
     column-gap: 26px;
     margin-bottom: 24px;
 
-    &__boxButton{
+    &__boxButton {
       max-width: 239px;
       width: 100%;
+    }
+  }
+
+  &__body {
+    background: map-get($colors-variables, white);
+    border: 1px solid map-get($colors-variables, complementary);
+    border-radius: 3px;
+
+    &__boxTitle {
+      border-bottom: 1px solid #f5f5f5;
+      padding: 18px 20px 14px 20px;
+
+      & h2 {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 23px;
+        display: flex;
+        align-items: center;
+        color: #000000;
+      }
+    }
+
+    &__boxItems{
+      padding: 20px;
     }
   }
 }

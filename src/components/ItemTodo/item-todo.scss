@@ -1,0 +1,35 @@
+@import "../../assets/styles/variables";
+
+.itemTodo {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid map-get($colors-variables, secondary);
+  padding: 22px 14px 22px 14px;
+
+  &:first-child {
+    padding: 3px 14px 22px 14px;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__title {
+    max-width: 351px;
+    font-family: map-get($font-family, title);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    color: map-get($colors-variables, black_1);
+    display: inline-block;
+  }
+
+  &__boxActions{
+    display: flex;
+    flex-direction: row;
+    column-gap: 13px;
+  }
+}

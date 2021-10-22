@@ -40,7 +40,6 @@ const TodoListWidget = (props: Props) => {
           />
           <div className="boxTodoList__header__boxButton">
             <Button
-              hasIcon
               icon={IconAdd}
               onClick={() => console.log("enviando...")}
               content="Add"
@@ -50,13 +49,15 @@ const TodoListWidget = (props: Props) => {
         </div>
         {/* BODY */}
         <div className="boxTodoList__body">
-          <div>
+          <div className="boxTodoList__body__boxTitle">
             <h2>Todo List</h2>
           </div>
-          <ItemTodo />
-          <ItemTodo />
-          <ItemTodo />
-          <ItemTodo />
+          <div className="boxTodoList__body__boxItems">
+            <ItemTodo />
+            <ItemTodo />
+            <ItemTodo />
+            <ItemTodo />
+          </div>
         </div>
       </section>
     </Layout>
