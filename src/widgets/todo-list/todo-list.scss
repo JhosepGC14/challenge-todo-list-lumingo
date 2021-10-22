@@ -3,18 +3,33 @@
 .boxTodoList {
   max-width: 740px;
   width: 100%;
-  max-height: 474px;
+  max-height: auto;
+
+  @media (max-width: 650px) {
+    max-height: 100%;
+  }
 
   &__header {
     display: flex;
     align-items: center;
     flex-direction: row;
     column-gap: 26px;
-    margin-bottom: 24px;
+    margin-bottom: 34px;
+
+    @media (max-width: 650px) {
+      flex-direction: column;
+      column-gap: 0px;
+      row-gap: 23px;
+      margin-bottom: 38px;
+    }
 
     &__boxButton {
       max-width: 239px;
       width: 100%;
+
+      @media (max-width: 650px) {
+        max-width: 100%;
+      }
     }
   }
 
@@ -36,6 +51,10 @@
         display: flex;
         align-items: center;
         color: map-get($colors-variables, black_1);
+
+        @media (max-width: 650px) {
+          justify-content: center;
+        }
       }
     }
 

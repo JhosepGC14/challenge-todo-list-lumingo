@@ -27,9 +27,11 @@
     display: inline-block;
   }
 
-  &__boxActions{
+  &__boxActions {
     display: flex;
     flex-direction: row;
     column-gap: 13px;
+    max-width: 83px;
+    width: 100%;
   }
 }
