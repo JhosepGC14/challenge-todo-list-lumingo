@@ -7,6 +7,7 @@ import {
   doc,
   getDocs,
   addDoc,
+  setDoc,
   deleteDoc,
 } from "firebase/firestore/lite";
 import { TODO } from "../../interfaces/Todo.interface";
@@ -17,7 +18,7 @@ const db = getFirestore(app);
 const todoDatabase = collection(db, "todos");
 
 // Get a list of todos from database
-export const getListTodos = async () => {
+export const getListTodosService = async () => {
   const todosListSnapshot = await getDocs(todoDatabase);
   const todoList = todosListSnapshot.docs.map((doc) => {
     return {
@@ -29,12 +30,20 @@ export const getListTodos = async () => {
 };
 
 // Create a todos from database
-export const createTodo = async (todo: TODO) => {
+export const createTodoService = async (todo: TODO) => {
   const todoAddResponse = await addDoc(todoDatabase, todo);
   return todoAddResponse;
 };
 
+//Edit a todo from database
+export const editTodoService = async (todo: TODO) => {
+  const todoEditResponse = await setDoc(doc(db, "todos", todo.id!), {
+    name: todo.name,
+  });
+  return todoEditResponse;
+};
+
 // Delete un todo from database
-export const deleteTodo = async (id: string) => {
+export const deleteTodoService = async (id: string) => {
   await deleteDoc(doc(db, "todos", id));
 };

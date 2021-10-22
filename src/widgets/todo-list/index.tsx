@@ -12,7 +12,11 @@ import { v4 as uuidv4 } from "uuid";
 
 //styles
 import "./todo-list.scss";
-import { createTodo, getListTodos } from "../../infrastructure/services";
+import {
+  createTodoService,
+  editTodoService,
+  getListTodosService,
+} from "../../infrastructure/services";
 
 //interfaces
 import { TODO } from "../../interfaces/Todo.interface";
@@ -22,6 +26,10 @@ const TodoListWidget = () => {
   const [textNewTodo, setTextNewTodo] = useState<string>("");
   const [listAllTodos, setlistAllTodos] = useState<TODO[]>([]);
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [isEditing, setIsEditing] = useState({
+    todo: false,
+    id: "",
+  });
 
   //useEffect para obtener los datos
   useEffect(() => {
@@ -40,7 +48,7 @@ const TodoListWidget = () => {
   //funcion para obetener los datos de todos
   const handleGetTodos = async () => {
     try {
-      const response = await getListTodos();
+      const response = await getListTodosService();
       setlistAllTodos(response);
     } catch (error) {
       console.log("Error handleGetTodos: ", error);
@@ -53,11 +61,44 @@ const TodoListWidget = () => {
       let query: TODO = {
         name: textNewTodo,
       };
-      await createTodo(query);
+      await createTodoService(query);
       await handleGetTodos();
       setTextNewTodo("");
     } catch (error) {
       console.log("error handleAddTodo : ", error);
+    }
+  };
+
+  //funcion que prepara el form para editar
+  const prepareFormForEdit = (todo: TODO) => {
+    setIsEditing({
+      todo: true,
+      id: todo.id!,
+    });
+    setTextNewTodo(todo.name!);
+  };
+
+  //funcion que prepara el form para crear
+  const prepareFormForAdd = () => {
+    setIsEditing({
+      todo: false,
+      id: "",
+    });
+    setTextNewTodo("");
+  };
+
+  //funcion que edita un todo
+  const handleEditTodo = async () => {
+    try {
+      let query: TODO = {
+        id: isEditing.id,
+        name: textNewTodo,
+      };
+      await editTodoService(query);
+      await handleGetTodos();
+      prepareFormForAdd();
+    } catch (error) {
+      console.log("error handleEditTodo : ", error);
     }
   };
 
@@ -81,8 +122,8 @@ const TodoListWidget = () => {
           <div className="boxTodoList__header__boxButton">
             <Button
               icon={IconAdd}
-              onClick={handleAddTodo}
-              content="Add"
+              onClick={!isEditing.todo ? handleAddTodo : handleEditTodo}
+              content={isEditing.todo ? "Edit" : "Add"}
               type="button"
               disabled={buttonDisabled}
             />
@@ -99,10 +140,11 @@ const TodoListWidget = () => {
               listAllTodos.map((item) => {
                 return (
                   <ItemTodo
-                    key={item.id}
+                    key={uuidv4()}
                     name={item.name}
                     id={item.id}
                     updateList={handleGetTodos}
+                    editTodo={prepareFormForEdit}
                   />
                 );
               })}
