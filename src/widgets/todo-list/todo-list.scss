@@ -24,23 +24,37 @@
     border-radius: 3px;
 
     &__boxTitle {
-      border-bottom: 1px solid #f5f5f5;
+      border-bottom: 1px solid map-get($colors-variables, secondary);
       padding: 18px 20px 14px 20px;
 
       & h2 {
-        font-family: Roboto;
+        font-family: map-get($font-family, title);
         font-style: normal;
         font-weight: bold;
         font-size: 20px;
         line-height: 23px;
         display: flex;
         align-items: center;
-        color: #000000;
+        color: map-get($colors-variables, black_1);
       }
     }
 
-    &__boxItems{
+    &__boxItems {
       padding: 20px;
+
+      &__boxMessage {
+        & p {
+          font-family: map-get($font-family, title);
+          font-style: normal;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 19px;
+          color: map-get($colors-variables, black_1);
+          text-align: center;
+          width: 100%;
+
+        }
+      }
     }
   }
 }

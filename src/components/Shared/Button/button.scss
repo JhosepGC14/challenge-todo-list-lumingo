@@ -41,4 +41,9 @@
     border: none;
     box-shadow: none;
   }
+
+  &:disabled{
+    background: #E3E6FA;
+    color: #A9AFD9;
+  }
 }

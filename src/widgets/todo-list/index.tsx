@@ -8,20 +8,60 @@ import Button from "../../components/Shared/Button";
 import IconAdd from "../../assets/images/icon_add.svg";
 
 //services
-import { getListTodos } from "../../infrastructure/services/firebase";
+import { v4 as uuidv4 } from "uuid";
 
 //styles
 import "./todo-list.scss";
+import { createTodo, getListTodos } from "../../infrastructure/services";
 
-interface Props {}
+//interfaces
+import { TODO } from "../../interfaces/Todo.interface";
 
-const TodoListWidget = (props: Props) => {
+const TodoListWidget = () => {
+  //states
   const [textNewTodo, setTextNewTodo] = useState<string>("");
+  const [listAllTodos, setlistAllTodos] = useState<TODO[]>([]);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
-  // useEffect(() => {
-  //   getListTodos().then((e) => console.log(e));
-  // }, []);
+  //useEffect para obtener los datos
+  useEffect(() => {
+    handleGetTodos();
+  }, []);
 
+  //useEffect para validar la creacion de todos
+  useEffect(() => {
+    if (textNewTodo.trim() !== "" && textNewTodo.length > 5) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [textNewTodo]);
+
+  //funcion para obetener los datos de todos
+  const handleGetTodos = async () => {
+    try {
+      const response = await getListTodos();
+      setlistAllTodos(response);
+    } catch (error) {
+      console.log("Error handleGetTodos: ", error);
+    }
+  };
+
+  //funcion para crear un todos
+  const handleAddTodo = async () => {
+    try {
+      let query: TODO = {
+        name: textNewTodo,
+      };
+      await createTodo(query);
+      await handleGetTodos();
+      setTextNewTodo("");
+    } catch (error) {
+      console.log("error handleAddTodo : ", error);
+    }
+  };
+
+  //controlador del input texto
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextNewTodo(e.target.value);
   };
@@ -41,9 +81,10 @@ const TodoListWidget = (props: Props) => {
           <div className="boxTodoList__header__boxButton">
             <Button
               icon={IconAdd}
-              onClick={() => console.log("enviando...")}
+              onClick={handleAddTodo}
               content="Add"
               type="button"
+              disabled={buttonDisabled}
             />
           </div>
         </div>
@@ -53,10 +94,23 @@ const TodoListWidget = (props: Props) => {
             <h2>Todo List</h2>
           </div>
           <div className="boxTodoList__body__boxItems">
-            <ItemTodo />
-            <ItemTodo />
-            <ItemTodo />
-            <ItemTodo />
+            {listAllTodos &&
+              listAllTodos.length > 0 &&
+              listAllTodos.map((item) => {
+                return (
+                  <ItemTodo
+                    key={item.id}
+                    name={item.name}
+                    id={item.id}
+                    updateList={handleGetTodos}
+                  />
+                );
+              })}
+            {listAllTodos && listAllTodos.length === 0 && (
+              <div className="boxTodoList__body__boxItems__boxMessage">
+                <p>No hay ninguna tarea a realizar :)</p>
+              </div>
+            )}
           </div>
         </div>
       </section>

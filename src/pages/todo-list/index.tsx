@@ -5,9 +5,7 @@ import TodoListWidget from "../../widgets/todo-list";
 //styles
 import "./todo_list.scss";
 
-interface Props {}
-
-const TodoListPage = (props: Props) => {
+const TodoListPage = () => {
   return <TodoListWidget/>;
 };
 
