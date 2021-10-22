@@ -1,0 +1,44 @@
+@import "../../../assets/styles/variables";
+
+.buttonPrimary {
+  width: 100%;
+  background: map-get($colors-variables, primary);
+  border-radius: 5px;
+  padding: 10px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  box-shadow: none;
+  font-family: map-get($font-family, title);
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: map-get($colors-variables, white);
+  cursor: pointer;
+
+  &__icon{
+    max-width: 20px;
+    max-height: 20px;
+    width: 100%;
+    margin-right: 7px;
+  }
+
+  &:hover {
+    background: map-get($colors-variables, primary);
+    color: map-get($colors-variables, white);
+    border: none;
+    box-shadow: none;
+  }
+
+  &:focus {
+    background: map-get($colors-variables, primary);
+    color: map-get($colors-variables, white);
+    border: none;
+    box-shadow: none;
+  }
+}

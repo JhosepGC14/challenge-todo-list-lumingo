@@ -1,6 +1,18 @@
-.boxTodoList{
+.boxTodoList {
   max-width: 740px;
   width: 100%;
   max-height: 474px;
-  background-color: red
+
+  &__header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    column-gap: 26px;
+    margin-bottom: 24px;
+
+    &__boxButton{
+      max-width: 239px;
+      width: 100%;
+    }
+  }
 }
