@@ -5,6 +5,7 @@ import Layout from "../../components/Shared/Layout";
 import ItemTodo from "../../components/ItemTodo";
 import Input from "../../components/Shared/Input";
 import Button from "../../components/Shared/Button";
+import SearchTodo from "../../components/SearchTodo";
 import IconAdd from "../../assets/images/icon_add.svg";
 
 //services
@@ -24,6 +25,7 @@ import { TODO } from "../../interfaces/Todo.interface";
 const TodoListWidget = () => {
   //states
   const [textNewTodo, setTextNewTodo] = useState<string>("");
+  const [textSearch, setTextSearch] = useState("");
   const [listAllTodos, setlistAllTodos] = useState<TODO[]>([]);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [isEditing, setIsEditing] = useState({
@@ -102,9 +104,20 @@ const TodoListWidget = () => {
     }
   };
 
+  //searchTodo
+  const searchingItemTodo = (term: string) => {
+    return (item: TODO) => {
+      return item.name?.toLowerCase().includes(term.toLowerCase()) || !term;
+    };
+  };
+
   //controlador del input texto
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextNewTodo(e.target.value);
+  };
+
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTextSearch(e.target.value);
   };
 
   return (
@@ -133,11 +146,20 @@ const TodoListWidget = () => {
         <div className="boxTodoList__body">
           <div className="boxTodoList__body__boxTitle">
             <h2>Todo List</h2>
+            <div className="boxTodoList__body__boxTitle__boxSerach">
+              <Input
+                type="text"
+                placeholder="Buscar tarea..."
+                name="textNewTodo"
+                value={textSearch}
+                onChange={handleChangeSearch}
+              />
+            </div>
           </div>
           <div className="boxTodoList__body__boxItems">
             {listAllTodos &&
               listAllTodos.length > 0 &&
-              listAllTodos.map((item) => {
+              listAllTodos.filter(searchingItemTodo(textSearch)).map((item) => {
                 return (
                   <ItemTodo
                     key={uuidv4()}
