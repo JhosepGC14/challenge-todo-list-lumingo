@@ -21,6 +21,7 @@ import {
 
 //interfaces
 import { TODO } from "../../interfaces/Todo.interface";
+import Loader from "../../components/Shared/Loader";
 
 const TodoListWidget = () => {
   //states
@@ -28,6 +29,7 @@ const TodoListWidget = () => {
   const [textSearch, setTextSearch] = useState("");
   const [listAllTodos, setlistAllTodos] = useState<TODO[]>([]);
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState({
     todo: false,
     id: "",
@@ -50,24 +52,30 @@ const TodoListWidget = () => {
   //funcion para obetener los datos de todos
   const handleGetTodos = async () => {
     try {
+      setLoading(true);
       const response = await getListTodosService();
       setlistAllTodos(response);
+      setLoading(false);
     } catch (error) {
       console.log("Error handleGetTodos: ", error);
+      setLoading(false);
     }
   };
 
   //funcion para crear un todos
   const handleAddTodo = async () => {
     try {
+      setLoading(true);
       let query: TODO = {
         name: textNewTodo,
       };
       await createTodoService(query);
       await handleGetTodos();
       setTextNewTodo("");
+      setLoading(false);
     } catch (error) {
       console.log("error handleAddTodo : ", error);
+      setLoading(false);
     }
   };
 
@@ -92,6 +100,7 @@ const TodoListWidget = () => {
   //funcion que edita un todo
   const handleEditTodo = async () => {
     try {
+      setLoading(true);
       let query: TODO = {
         id: isEditing.id,
         name: textNewTodo,
@@ -99,8 +108,10 @@ const TodoListWidget = () => {
       await editTodoService(query);
       await handleGetTodos();
       prepareFormForAdd();
+      setLoading(false);
     } catch (error) {
       console.log("error handleEditTodo : ", error);
+      setLoading(false);
     }
   };
 
@@ -122,6 +133,7 @@ const TodoListWidget = () => {
 
   return (
     <Layout>
+      <Loader show={loading} />
       <section className="boxTodoList">
         {/* HEADER */}
         <div className="boxTodoList__header">
@@ -167,6 +179,7 @@ const TodoListWidget = () => {
                     id={item.id}
                     updateList={handleGetTodos}
                     editTodo={prepareFormForEdit}
+                    showLoading={setLoading}
                   />
                 );
               })}

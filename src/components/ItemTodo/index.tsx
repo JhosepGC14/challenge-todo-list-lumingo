@@ -18,17 +18,21 @@ interface Props {
   id?: string;
   updateList: () => void;
   editTodo: (todo: TODO) => void;
+  showLoading: (loading: boolean) => void;
 }
 
 const ItemTodo = (props: Props) => {
-  const { name, id, updateList, editTodo } = props;
+  const { name, id, updateList, editTodo, showLoading } = props;
 
   const handleDeleteTodo = async (id: string) => {
     try {
+      showLoading(true);
       await deleteTodoService(id);
       updateList();
+      showLoading(false);
     } catch (error) {
       console.log("handleDeleteTodo : ", error);
+      showLoading(false);
     }
   };
 
